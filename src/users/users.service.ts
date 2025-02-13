@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+//import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -10,23 +11,35 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  getAll(): string {
-    return 'Todos los usuarios!';
+  /** Obtiene todos los usuarios (solo para administradores) */
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  getUser(id: string): string {
-    return 'usuario en particular id: ' + id;
+  /** Busca un usuario por email */
+  async findOneByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email } });
   }
 
+  async findOneById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
+  //TODO: incorporar DTO
+  /** Crea un usuario */
   createUser(): string {
     return 'crear usuario';
   }
 
-  removeUser(): string {
-    return 'borrar usuario';
+  /** Actualiza un usuario por ID */
+  async update(id: string, updateUserDto: Partial<User>): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('Usuario no encontrado');
+    return this.userRepository.save({ ...user, ...updateUserDto });
   }
 
-  updateUser(): string {
-    return 'actualiza usuario';
+  /** Elimina un usuario por ID */
+  async remove(id: string): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
