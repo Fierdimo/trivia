@@ -50,6 +50,12 @@ export class UsersService {
   async update(id: string, updateUserDto: Partial<User>): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException('Usuario no encontrado');
+    const isPassword = updateUserDto.password;
+    const password = isPassword
+      ? await bcrypt.hash(isPassword, 10)
+      : user.password;
+
+    updateUserDto.password = password;
     return this.userRepository.save({ ...user, ...updateUserDto });
   }
 

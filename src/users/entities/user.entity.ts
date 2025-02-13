@@ -30,7 +30,6 @@ export class User {
   email: string;
 
   @ApiProperty({ description: 'Contraseña encriptada', example: '********' })
-  @Exclude()
   @Column()
   password: string;
 
