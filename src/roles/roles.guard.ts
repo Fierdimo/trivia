@@ -29,3 +29,22 @@ export class RolesGuard implements CanActivate {
     return true;
   }
 }
+
+@Injectable()
+export class SelfOrAdminGuard implements CanActivate {
+  constructor() {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
+    const userId = request.params.id;
+
+    if (user.role === 'admin') return true;
+
+    if (user.id === userId) return true;
+
+    throw new ForbiddenException(
+      'No tienes permisos para realizar esta acción',
+    );
+  }
+}

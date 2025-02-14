@@ -10,7 +10,7 @@ import {
 import { UsersService } from './users.service';
 import { User, UserRole } from './entities/user.entity';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { RolesGuard } from 'src/roles/roles.guard';
+import { RolesGuard, SelfOrAdminGuard } from 'src/roles/roles.guard';
 import { Roles } from 'src/roles/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
@@ -26,6 +26,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, SelfOrAdminGuard)
   getUser(@Param() param: { id: string }): Promise<User | null> {
     return this.userService.findOneById(param.id);
   }
@@ -35,6 +36,7 @@ export class UsersController {
     return this.userService.create(body);
   }
   @Put(':id')
+  @UseGuards(JwtAuthGuard, SelfOrAdminGuard)
   updateUser(
     @Body() body: Partial<RegisterUserDto>,
     @Param() param: { id: string },
