@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User, UserRole } from './entities/user.entity';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -31,10 +23,6 @@ export class UsersController {
     return this.userService.findOneById(param.id);
   }
 
-  @Post()
-  createUser(@Body() body: RegisterUserDto): Promise<User> {
-    return this.userService.create(body);
-  }
   @Put(':id')
   @UseGuards(JwtAuthGuard, SelfOrAdminGuard)
   updateUser(

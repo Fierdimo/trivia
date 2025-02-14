@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 export enum UserRole {
   USER = 'user',
@@ -29,6 +30,7 @@ export class User {
   email: string;
 
   @ApiProperty({ description: 'Contraseña encriptada', example: '********' })
+  @Exclude()
   @Column()
   password: string;
 
