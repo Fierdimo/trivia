@@ -5,6 +5,7 @@ import { RolesGuard } from 'src/roles/roles.guard';
 import { UserRole } from 'src/users/entities/user.entity';
 import { Roles } from 'src/roles/roles.decorator';
 import { Question } from './entities/questions.entity';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('questions')
 export class QuestionsController {
@@ -13,6 +14,12 @@ export class QuestionsController {
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.USER)
+  @ApiOperation({ summary: 'Obtener preguntas por categoría' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de preguntas',
+    type: [Question],
+  })
   async getByCategory(@Query('category') category: string) {
     return this.questionsService.findByCategory(category);
   }
@@ -20,6 +27,13 @@ export class QuestionsController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiOperation({ summary: 'Crear nueva pregunta (solo admin)' })
+  @ApiBody({ type: Question })
+  @ApiResponse({
+    status: 201,
+    description: 'Pregunta creada',
+    type: Question,
+  })
   async create(
     @Body() createQuestionDto: Partial<Question>,
   ): Promise<Question> {

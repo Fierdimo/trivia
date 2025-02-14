@@ -13,8 +13,6 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
   @ApiOperation({
     summary: 'Muestra una lista de todos los usuarios. Solo para ADMIN',
   })
@@ -23,6 +21,8 @@ export class UsersController {
     status: 401,
     description: 'No tienes permisos para realizar esta acción',
   })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   getUsers(): Promise<User[]> {
     return this.userService.findAll();
   }
