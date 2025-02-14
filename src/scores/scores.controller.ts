@@ -3,6 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { ScoresService } from './scores.service';
 import { User } from 'src/users/entities/user.entity';
+import { Score } from './entities/scores.entity';
 
 @ApiTags('Scores')
 @Controller('scores')
