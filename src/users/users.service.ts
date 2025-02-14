@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -8,6 +9,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dto/register-user.dto';
 import * as bcrypt from 'bcryptjs';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class UsersService {
@@ -27,7 +29,16 @@ export class UsersService {
   }
 
   async findOneById(id: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { id } });
+    try {
+      await validate({ id }, { skipMissingProperties: true });
+
+      const user = await this.userRepository.findOne({ where: { id } });
+      if (!user) throw new NotFoundException('Usuario no encontrado');
+
+      return user;
+    } catch {
+      throw new NotFoundException('Usuario no encontrado');
+    }
   }
 
   /** Crea un nuevo usuario con contraseña encriptada */
@@ -48,15 +59,19 @@ export class UsersService {
 
   /** Actualiza un usuario por ID */
   async update(id: string, updateUserDto: Partial<User>): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) throw new NotFoundException('Usuario no encontrado');
-    const isPassword = updateUserDto.password;
-    const password = isPassword
-      ? await bcrypt.hash(isPassword, 10)
-      : user.password;
+    try {
+      const user = await this.userRepository.findOne({ where: { id } });
+      if (!user) throw new NotFoundException('Usuario no encontrado');
+      const isPassword = updateUserDto.password;
+      const password = isPassword
+        ? await bcrypt.hash(isPassword, 10)
+        : user.password;
 
-    updateUserDto.password = password;
-    return this.userRepository.save({ ...user, ...updateUserDto });
+      updateUserDto.password = password;
+      return this.userRepository.save({ ...user, ...updateUserDto });
+    } catch {
+      throw new NotFoundException('Usuario no encontrado');
+    }
   }
 
   /** Elimina un usuario por ID */

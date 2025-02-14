@@ -15,7 +15,12 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Iniciar sesión' })
-  @ApiResponse({ status: 200, description: 'JWT token generado' })
+  @ApiResponse({
+    status: 200,
+    description: 'JWT token generado con vigencia de 1 hora',
+    example:
+      '{  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGE2MDMwNS0zNmJkLTQ3NDEtYTcyNi04MjAzOGE0MjVkM2UiLCJlbWFpbCI6ImJvYkFkbWluQG1haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM5NTAzMDI3LCJleHAiOjE3Mzk1MDY2Mjd9.DGkri6eHhOhqgKpmoO0cHYYzM8dX1lSGaw5DCgBYXU8"}',
+  })
   @ApiResponse({ status: 401, description: 'Credenciales inválidas' })
   async login(@Body() loginUserDto: LoginUserDto) {
     const user = await this.authService.validateUser(
@@ -26,6 +31,9 @@ export class AuthController {
   }
 
   @Post('register')
+  @ApiOperation({ summary: 'Registrar nuevo usuario' })
+  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente' })
+  @ApiResponse({ status: 409, description: 'Email ya registrado' })
   registerUser(@Body() body: RegisterUserDto): Promise<User> {
     return this.userService.create(body);
   }

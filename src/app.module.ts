@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { QuestionsModule } from './questions/questions.module';
 
 const DB_PORT = process.env.DB_PORT || 5432;
 @Module({
@@ -19,6 +20,7 @@ const DB_PORT = process.env.DB_PORT || 5432;
     }),
     UsersModule,
     AuthModule,
+    QuestionsModule,
   ],
 })
 export class AppModule {}
