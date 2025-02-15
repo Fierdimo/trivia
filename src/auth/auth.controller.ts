@@ -36,6 +36,7 @@ export class AuthController {
   @ApiResponse({ status: 409, description: 'Email ya registrado' })
   async registerUser(@Body() body: RegisterUserDto) {
     const user = await this.userService.create(body);
-    return this.authService.login(user);
+    const token = await this.authService.login(user);
+    return { ...token, id: user.id };
   }
 }
