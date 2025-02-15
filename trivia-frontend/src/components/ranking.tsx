@@ -14,7 +14,7 @@ import {
 export default function Ranking() {
   const { ranking } = useRankings();
   return (
-    <Container>
+    <Container sx={{ overflow: 'scroll', height:'100dvh'}}>
       <Typography variant="h4">Ranking en Tiempo Real</Typography>
       <TableContainer component={Paper}>
         <Table>

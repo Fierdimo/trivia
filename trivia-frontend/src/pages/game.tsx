@@ -4,6 +4,7 @@ import useAuth from "@/hooks/useAuth";
 import { UserContext } from "@/context/userContext";
 import Ranking from "@/components/ranking";
 import Header from "@/components/header";
+import Questions from "@/components/questions";
 
 export default function Game() {
   const [isLogged, setIsLogged] = useState(false);
@@ -26,7 +27,9 @@ export default function Game() {
         <Grid2>
           <Header user={user} logout={logout} />
         </Grid2>
-        <Grid2>questions</Grid2>
+        <Grid2 height={"80%"}>
+          <Questions admin={user.role === "admin"} />
+        </Grid2>
       </Grid2>
       <Grid2 size={4}>
         <Ranking />
