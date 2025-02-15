@@ -27,7 +27,8 @@ export class AuthController {
       loginUserDto.email,
       loginUserDto.password,
     );
-    return this.authService.login(user);
+    const token = await this.authService.login(user);
+    return { ...token, id: user.id };
   }
 
   @Post('register')
