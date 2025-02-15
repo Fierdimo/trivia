@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Typography, Button, Container, CircularProgress } from '@mui/material';
 import axios from 'axios';
+import useAuth from '@/hooks/useAuth';
 
 export default function Game() {
   const [questions, setQuestions] = useState([]);
@@ -9,6 +10,11 @@ export default function Game() {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const router = useRouter();
+
+  const { getUser } = useAuth();
+  useLayoutEffect(() => {
+    getUser();
+  },[]);
 
 //   useEffect(() => {
 //     const fetchQuestions = async () => {

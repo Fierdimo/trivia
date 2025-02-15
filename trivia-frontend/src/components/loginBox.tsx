@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import useSubmitLogin from "@/hooks/useSubmitLogin";
+import useAuth from "@/hooks/useAuth";
 
 export default function LoginBox() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
-  const { handleSubmit } = useSubmitLogin();
+  const { handleSubmit } = useAuth();
   function submit(e: React.FormEvent) {
     e.preventDefault();
     handleSubmit(isLogin, email, password);
