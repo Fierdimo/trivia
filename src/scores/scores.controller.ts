@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { ScoresService } from './scores.service';
@@ -23,6 +23,15 @@ export class ScoresController {
   @ApiResponse({ status: 401, description: 'No autorizado' })
   async submitScore(@Body('points') points: number, @Req() req) {
     const user = req.user as User;
-    await this.scoresService.submitScore(user, points);
+    return await this.scoresService.submitScore(user, points);
+  }
+
+  @Get('globalRanking')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener el ranking de usuarios' })
+  @ApiResponse({ status: 201, description: 'Ranking de usuarios' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  async getGlobalScore() {
+    return this.scoresService.getGlobalRanking();
   }
 }

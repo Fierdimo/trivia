@@ -14,9 +14,28 @@ export class ScoresService {
   ) {}
 
   async submitScore(user: User, points: number): Promise<Score> {
-    const score = this.scoreRepository.create({ user, points });
+    let score = await this.scoreRepository.findOne({ where: { user } });
+
+    if (score) {
+      score.points += parseInt(`${points}`);
+    } else {
+      score = this.scoreRepository.create({ user, points });
+    }
+
     const savedScore = await this.scoreRepository.save(score);
     await this.rankingGateway.handleUpdateScore();
     return savedScore;
+  }
+
+  async getGlobalRanking(): Promise<Array<{ email: string; points: number }>> {
+    const scores = await this.scoreRepository.find({
+      relations: ['user'],
+      order: { points: 'DESC' },
+    });
+
+    return scores.map((score) => ({
+      email: score.user.email,
+      points: score.points,
+    }));
   }
 }

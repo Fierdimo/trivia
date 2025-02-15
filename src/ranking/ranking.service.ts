@@ -10,10 +10,15 @@ export class RankingService {
     private readonly scoreRepository: Repository<Score>,
   ) {}
 
-  async getGlobalRanking(): Promise<Score[]> {
-    return this.scoreRepository.find({
+  async getGlobalRanking() {
+    const scores = await this.scoreRepository.find({
       relations: ['user'],
       order: { points: 'DESC' },
     });
+
+    return scores.map((score) => ({
+      email: score.user.email,
+      points: score.points,
+    }));
   }
 }
