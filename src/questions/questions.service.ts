@@ -25,4 +25,13 @@ export class QuestionsService {
     const question = this.questionRepository.create(createQuestionDto);
     return this.questionRepository.save(question);
   }
+
+  async findAllCategories(): Promise<string[]> {
+    const categories = await this.questionRepository
+      .createQueryBuilder('question')
+      .select('DISTINCT(question.category)', 'category')
+      .getRawMany();
+
+    return categories.map((c) => c.category);
+  }
 }

@@ -39,4 +39,18 @@ export class QuestionsController {
   ): Promise<Question> {
     return this.questionsService.create(createQuestionDto);
   }
+
+  @Get('/categories')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener todas las categorías disponibles' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de categorías',
+    schema: {
+      example: ['react', 'nodejs', 'javascript'],
+    },
+  })
+  async getCategories() {
+    return this.questionsService.findAllCategories();
+  }
 }
