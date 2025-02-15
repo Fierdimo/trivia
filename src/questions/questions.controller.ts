@@ -1,11 +1,19 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { UserRole } from 'src/users/entities/user.entity';
 import { Roles } from 'src/roles/roles.decorator';
 import { Question } from './entities/questions.entity';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('questions')
 export class QuestionsController {
@@ -52,5 +60,26 @@ export class QuestionsController {
   })
   async getCategories() {
     return this.questionsService.findAllCategories();
+  }
+  @Get('/random')
+  @ApiOperation({ summary: 'Obtener pregunta aleatoria por categoría' })
+  @ApiQuery({ name: 'category', required: true, example: 'react' })
+  @ApiResponse({
+    status: 200,
+    description: 'Pregunta aleatoria',
+    type: Question,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Categoría no encontrada',
+  })
+  async getRandomQuestion(
+    @Query('category') category: string,
+  ): Promise<Question> {
+    try {
+      return await this.questionsService.getRandomQuestionByCategory(category);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }

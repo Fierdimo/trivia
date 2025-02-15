@@ -34,4 +34,21 @@ export class QuestionsService {
 
     return categories.map((c) => c.category);
   }
+
+  async getRandomQuestionByCategory(category: string): Promise<Question> {
+    const question = await this.questionRepository
+      .createQueryBuilder('question')
+      .where('question.category = :category', { category })
+      .orderBy('RANDOM()')
+      .limit(1)
+      .getOne();
+
+    if (!question) {
+      throw new NotFoundException(
+        `No se encontraron preguntas para la categoría ${category}`,
+      );
+    }
+
+    return question;
+  }
 }
