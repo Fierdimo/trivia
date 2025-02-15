@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "@/types/user";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -7,11 +8,11 @@ export default function useAuth() {
   const router = useRouter();
   const backendHost = process.env.BK_HOST || "http://localhost:3000";
 
-  const handleSubmit = async (
+  async function handleSubmit(
     isLogin: boolean,
     email: string,
     password: string
-  ) => {
+  ) {
     const url = isLogin ? "/auth/login" : "/auth/register";
     try {
       const { data } = await axios.post(backendHost + url, { email, password });
@@ -21,9 +22,9 @@ export default function useAuth() {
     } catch (error) {
       alert("Error: " + error.response?.data?.message);
     }
-  };
+  }
 
-  async function getUser() {
+  async function getUser(login: (userData: User) => void) {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
@@ -36,7 +37,8 @@ export default function useAuth() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
+      login(data);
+      return true
     } catch (error) {
       alert(
         error?.status == 401
@@ -44,6 +46,7 @@ export default function useAuth() {
           : "Error al validar el usuario"
       );
       router.push("/");
+      return false
     }
   }
 

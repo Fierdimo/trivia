@@ -7,6 +7,7 @@ export default function LoginBox() {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
+
   const { handleSubmit } = useAuth();
   function submit(e: React.FormEvent) {
     e.preventDefault();

@@ -1,71 +1,36 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Typography, Button, Container, CircularProgress } from '@mui/material';
-import axios from 'axios';
-import useAuth from '@/hooks/useAuth';
+import { useLayoutEffect, useContext, useState } from "react";
+import { CircularProgress, Grid2 } from "@mui/material";
+import useAuth from "@/hooks/useAuth";
+import { UserContext } from "@/context/userContext";
+import Ranking from "@/components/ranking";
+import Header from "@/components/header";
 
 export default function Game() {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(10);
-  const router = useRouter();
-
+  const [isLogged, setIsLogged] = useState(false);
   const { getUser } = useAuth();
+  const { login, logout, user } = useContext(UserContext);
+
+  async function getLogged() {
+    const validUser = await getUser(login);
+    setIsLogged(validUser);
+  }
   useLayoutEffect(() => {
-    getUser();
-  },[]);
+    getLogged();
+  }, []);
 
-//   useEffect(() => {
-//     const fetchQuestions = async () => {
-//       try {
-//         const { data } = await axios.get('/api/questions?category=react');
-//         setQuestions(data);
-//       } catch (error) {
-//         alert('Error al cargar preguntas');
-//       }
-//     };
-//     fetchQuestions();
-//   }, []);
-
-//   useEffect(() => {
-//     if (timeLeft === 0) {
-//       handleAnswer(null); // Tiempo agotado
-//     }
-//     const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
-//     return () => clearInterval(timer);
-//   }, [timeLeft]);
-
-  const handleAnswer = async (answer: string | null) => {
-    const isCorrect = answer === questions[currentQuestion].correctAnswer;
-    if (isCorrect) setScore((s) => s + 10);
-
-    try {
-      await axios.post('/api/scores', { points: isCorrect ? 10 : 0 });
-    } catch (error) {
-      console.error('Error al enviar puntaje:', error);
-    }
-
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion((q) => q + 1);
-      setTimeLeft(10);
-    } else {
-      router.push('/ranking');
-    }
-  };
-
-//   if (!questions.length) return <CircularProgress />;
+  if (!isLogged) return <CircularProgress />;
 
   return (
-    <Container>
-      <Typography variant="h4">Pregunta {currentQuestion + 1}</Typography>
-      {/* <Typography>{questions[currentQuestion].text}</Typography>
-      <Typography>Tiempo restante: {timeLeft} segundos</Typography>
-      {questions[currentQuestion].options.map((option, index) => (
-        <Button key={index} onClick={() => handleAnswer(option)}>
-          {option}
-        </Button>
-      ))} */}
-    </Container>
+    <Grid2 container>
+      <Grid2 size={8}>
+        <Grid2>
+          <Header user={user} logout={logout} />
+        </Grid2>
+        <Grid2>questions</Grid2>
+      </Grid2>
+      <Grid2 size={4}>
+        <Ranking />
+      </Grid2>
+    </Grid2>
   );
 }

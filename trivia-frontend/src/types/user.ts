@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 type User = {
   id: string;
   email: string;
+  role: string;
 } | null;
 
 type UserContextType = {
@@ -14,4 +15,4 @@ type UserProviderProps = {
   children: ReactNode;
 };
 
-export type {User, UserContextType, UserProviderProps}
+export type { User, UserContextType, UserProviderProps };
