@@ -14,7 +14,7 @@ import {
 export default function Ranking() {
   const { ranking } = useRankings();
   return (
-    <Container sx={{ overflow: 'scroll', height:'100dvh'}}>
+    <Container sx={{ overflow: 'scroll', height:'90dvh'}}>
       <Typography variant="h4">Ranking en Tiempo Real</Typography>
       <TableContainer component={Paper}>
         <Table>
@@ -27,7 +27,6 @@ export default function Ranking() {
           <TableBody>
             {ranking?.map((rank, index) => (
               <TableRow key={index}>
-                {/* {JSON.stringify(rank.user)} */}
                 <TableCell>{rank.email}</TableCell>
                 <TableCell>{rank.points || 0}</TableCell>
               </TableRow>

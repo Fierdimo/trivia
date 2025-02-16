@@ -1,6 +1,8 @@
-body{
+body {
   margin: 0%;
   padding: 0;
+  height: 100dvh;
+  overflow: hidden;
 }
 .centeredBox {
   justify-content: center;
@@ -27,10 +29,10 @@ body{
 }
 
 .heartbeat {
-	animation: heartbeat 1.5s ease-in-out infinite both;
+  animation: heartbeat 1.5s ease-in-out infinite both;
 }
 
- @keyframes heartbeat {
+@keyframes heartbeat {
   from {
     transform: scale(1);
     transform-origin: center center;
@@ -55,11 +57,10 @@ body{
 }
 
 .tracking-in-expand {
-	animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+  animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.61, 0.355, 1) both;
 }
 
-
- @keyframes tracking-in-expand {
+@keyframes tracking-in-expand {
   0% {
     letter-spacing: -0.5em;
     opacity: 0;

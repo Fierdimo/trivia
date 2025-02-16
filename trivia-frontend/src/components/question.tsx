@@ -6,8 +6,11 @@ export default function Question({ question, setQuestion, setScore }) {
   const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
-    if (timeLeft === 0) {
-      setTimeLeft(10);
+    if (question) setTimeLeft(10);
+  }, [question]);
+
+  useEffect(() => {
+    if (timeLeft <= 0) {
       setQuestion(null);
     }
     const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
@@ -45,7 +48,7 @@ export default function Question({ question, setQuestion, setScore }) {
       borderRadius={"15px"}
       padding={3}
     >
-      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <Box sx={{ position: "relative", display: "inline-flex" }}>
         <CircularProgress variant="determinate" value={timeLeft * 10} />
         <Box
           sx={{
