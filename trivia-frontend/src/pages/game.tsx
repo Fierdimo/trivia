@@ -5,6 +5,7 @@ import { UserContext } from "@/context/userContext";
 import Ranking from "@/components/ranking";
 import Header from "@/components/header";
 import Questions from "@/components/questions";
+import Head from "next/head";
 
 export default function Game() {
   const [isLogged, setIsLogged] = useState(false);
@@ -23,6 +24,10 @@ export default function Game() {
 
   return (
     <Grid2 container>
+      <Head>
+        <title>Trivia - game</title>
+      </Head>
+
       <Grid2 size={8}>
         <Grid2>
           <Header user={user} logout={logout} />

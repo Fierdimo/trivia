@@ -1,10 +1,12 @@
 import { Grid2, Typography } from "@mui/material";
 import LoginBox from "@/components/loginBox";
 import Image from "next/image";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <Grid2 container>
+      <Head ><title>Trivia - login</title></Head>
       <Grid2
         size={{ md: 6 }}
         sx={{
