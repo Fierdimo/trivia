@@ -7,6 +7,7 @@ export default function useQuestions() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
+
   async function getRandomQuestion(category: string) {
     try {
       const { data } = await axios.get(
@@ -30,5 +31,25 @@ export default function useQuestions() {
       return null;
     }
   }
-  return { getRandomQuestion, setScore };
+
+  async function setNewQuestion(
+    text: string,
+    category: string,
+    options: string[],
+    correctAnswer: number
+  ) {
+    try {
+      await axios.post(
+        backendHost + "/questions",
+        { text, category: category.toLowerCase(), options, correctAnswer },
+        { headers }
+      );
+      alert("pregunta guardada con éxito");
+    } catch (error) {
+      console.log(error);
+      alert("Error: " + error.response?.data?.message);
+      return null;
+    }
+  }
+  return { getRandomQuestion, setScore, setNewQuestion };
 }

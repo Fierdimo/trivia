@@ -1,44 +1,62 @@
-import { Box, TextField } from "@mui/material";
+import useQuestions from "@/hooks/useQuestions";
+import { Box, Button, Checkbox, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function NewQuestion() {
+export default function NewQuestion({ closeDialog, getCategories }) {
   const [text, setText] = useState("");
   const [category, setCategory] = useState("");
-  const [answ, setAnsw] = useState(["", "", "", ""]);
+  const [options, setOptions] = useState(["", "", "", ""]);
+  const [correctAnswer, setCorrectAnswer] = useState(0);
 
-  function handleAnsw(text, position) {
-    answ[position] = text;
-    setAnsw(answ);
+  const { setNewQuestion } = useQuestions();
+
+  function handleOptions(text: string, position: number) {
+    const myOptions = [...options];
+    myOptions[position] = text;
+    setOptions(myOptions);
   }
-  function submit() {}
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    await setNewQuestion(text, category, options, correctAnswer);
+    await getCategories()
+    closeDialog();
+  }
+
   return (
-    <Box bgcolor={"white"} display={"flex"} padding={2}>
+    <Box bgcolor={"white"} display={"flex"} padding={"1rem 2rem"}>
       <form onSubmit={submit}>
         <TextField
-          label="Texto"
+          label="Pregunta"
           value={text}
           onChange={(e) => setText(e.target.value)}
           fullWidth
-          margin="normal"
+          margin="dense"
         />
         <TextField
           label="Categoria"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           fullWidth
-          margin="normal"
+          margin="dense"
         />
 
-        {answ.map((ans, ind) => (
-          <TextField
-            key={ind}
-            label={"Respuesta " + ind}
-            value={ans[ind]}
-            onChange={(e) => handleAnsw(e.target.value, ind)}
-            fullWidth
-            margin="normal"
-          />
+        {options.map((option, ind) => (
+          <Box display="flex" alignItems={"center"} gap={1} key={ind}>
+            <TextField
+              label={"Respuesta " + ind}
+              value={option}
+              onChange={(e) => handleOptions(e.target.value, ind)}
+              fullWidth
+              margin="dense"
+            />
+            <Checkbox
+              onClick={() => setCorrectAnswer(ind)}
+              checked={correctAnswer === ind}
+            />
+          </Box>
         ))}
+        <Button type="submit">Guardar</Button>
       </form>
     </Box>
   );

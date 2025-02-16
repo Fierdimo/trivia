@@ -27,8 +27,8 @@ export default function Game() {
         <Grid2>
           <Header user={user} logout={logout} />
         </Grid2>
-        <Grid2 height={"80%"}>
-          <Questions admin={user.role === "admin"} />
+        <Grid2 height={"70%"}>
+          <Questions admin={user?.role === "admin"} />
         </Grid2>
       </Grid2>
       <Grid2 size={4}>

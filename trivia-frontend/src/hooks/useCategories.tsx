@@ -6,6 +6,7 @@ export default function useCategories() {
   const backendHost = process.env.BK_HOST || "http://localhost:3000";
 
   async function getCategories() {
+    console.log('adquiriendo categorias')
     try {
       const token = localStorage.getItem("token");
       const { data } = await axios.get(backendHost + "/questions/categories", {
@@ -24,5 +25,5 @@ export default function useCategories() {
     getCategories();
   }, []);
 
-  return { categories };
+  return { categories, getCategories };
 }

@@ -4,7 +4,7 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  Tooltip,
+  Grid2,
   Typography,
 } from "@mui/material";
 import Question from "./question";
@@ -12,9 +12,9 @@ import { useState } from "react";
 import useQuestions from "@/hooks/useQuestions";
 import NewQuestion from "./newQuestion";
 
-export default function Questions({ admin }) {
+export default function Questions({ admin }: { admin: boolean }) {
   const [question, setQuestion] = useState();
-  const { categories } = useCategories();
+  const { categories, getCategories } = useCategories();
   const [open, setOpen] = useState(false);
   const { getRandomQuestion, setScore } = useQuestions();
 
@@ -25,7 +25,7 @@ export default function Questions({ admin }) {
     setOpen(false);
   }
 
-  async function updateQuestion(category) {
+  async function updateQuestion(category: string) {
     const newQuestion = await getRandomQuestion(category);
     setQuestion(newQuestion);
   }
@@ -37,31 +37,42 @@ export default function Questions({ admin }) {
       margin={1}
       padding={1}
       borderRadius={"10px"}
-      height={"100%"}
-      flexGrow={1}
+      height={"95%"}
       bgcolor={"cornflowerblue"}
     >
-      <Box>
-        <Typography textAlign={"center"}>Categorias</Typography>
-        {admin && <Button onClick={openDialog}>Agregar pregunta</Button>}
+      <Grid2 size={4} sx={{ overflow: "scroll" }} padding={1}>
+        <Typography variant="h4" textAlign={"center"}>
+          Categorias
+        </Typography>
+        {admin && (
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={openDialog}
+            sx={{ marginTop: "1rem" }}
+          >
+            Agregar pregunta
+          </Button>
+        )}
         {categories.length == 0 && (
           <Typography>No hay preguntas disponibles</Typography>
         )}
         {categories.map((category) => (
-          <Tooltip title={"Dame una pregunta de " + category} key={category}>
-            <Button
-              variant="contained"
-              color="error"
-              fullWidth
-              sx={{ marginTop: "1rem" }}
-              onClick={() => updateQuestion(category)}
-            >
-              {category}
-            </Button>
-          </Tooltip>
+          <Button
+            key={category}
+            variant="contained"
+            color="error"
+            fullWidth
+            sx={{ marginTop: "1rem" }}
+            onClick={() => updateQuestion(category)}
+            disabled={question}
+          >
+            {category}
+          </Button>
         ))}
-      </Box>
-      <Box
+      </Grid2>
+      <Grid2
+        size={8}
         justifyContent={"center"}
         alignItems={"center"}
         display="flex"
@@ -72,10 +83,10 @@ export default function Questions({ admin }) {
           setQuestion={setQuestion}
           setScore={setScore}
         />
-      </Box>
+      </Grid2>
       <Dialog open={open} onClose={closeDialog}>
         <DialogTitle>Nueva pregunta</DialogTitle>
-        <NewQuestion closeDialog={closeDialog} />
+        <NewQuestion closeDialog={closeDialog} getCategories={getCategories} />
       </Dialog>
     </Box>
   );
