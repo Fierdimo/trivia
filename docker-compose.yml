@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: trivia_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tu_password_seguro
+      POSTGRES_DB: trivia_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - trivia_network
+
+  # Backend (NestJS)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trivia_backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: tu_password_seguro
+      DB_NAME: trivia_db
+      JWT_SECRET: clave_secreta_jwt
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - trivia_network
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trivia_frontend
+    environment:
+      BK_HOSTS: http://backend:3000
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    networks:
+      - trivia_network
+
+# Volúmenes para persistencia de datos
+volumes:
+  postgres_data:
+
+# Red para conectar los servicios
+networks:
+  trivia_network:
+    driver: bridge
