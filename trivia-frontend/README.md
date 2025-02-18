@@ -122,7 +122,7 @@ services:
   # Backend (NestJS)
   backend:
     build:
-      context: ./backend
+      context: ./trivia-backend
       dockerfile: Dockerfile
     container_name: trivia_backend
     environment:
@@ -142,7 +142,7 @@ services:
   # Frontend (Next.js)
   frontend:
     build:
-      context: ./frontend
+      context: ./trivia-frontend
       dockerfile: Dockerfile
     container_name: trivia_frontend
     environment:

@@ -4,9 +4,13 @@ import { User, UserContextType, UserProviderProps } from "@/types/user";
 import { createContext, useState } from "react";
 import { useRouter } from "next/router";
 
-export const UserContext = createContext<UserContextType | undefined>(
-  undefined
-);
+export const UserContext = createContext<UserContextType>({
+  logout: () => {},
+  login: (userData: User) => {
+    return userData;
+  },
+  user: null,
+});
 
 export default function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User>(null);

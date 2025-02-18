@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export default function useQuestions() {
   const backendHost = process.env.BK_HOST || "http://localhost:3000";
@@ -47,7 +47,10 @@ export default function useQuestions() {
       alert("pregunta guardada con éxito");
     } catch (error) {
       console.log(error);
-      alert("Error: " + error.response?.data?.message);
+      const myError = error as AxiosError;
+      const data = myError.response?.data as { message: string };
+      const message = data?.message;
+      alert("Error: " + message);
       return null;
     }
   }

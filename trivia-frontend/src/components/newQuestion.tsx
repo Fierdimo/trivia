@@ -2,7 +2,14 @@ import useQuestions from "@/hooks/useQuestions";
 import { Box, Button, Checkbox, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function NewQuestion({ closeDialog, getCategories }) {
+type NewQuestion = {
+  closeDialog: () => void;
+  getCategories: () => void;
+};
+export default function NewQuestion({
+  closeDialog,
+  getCategories,
+}: NewQuestion) {
   const [text, setText] = useState("");
   const [category, setCategory] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
@@ -19,7 +26,7 @@ export default function NewQuestion({ closeDialog, getCategories }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     await setNewQuestion(text, category, options, correctAnswer);
-    await getCategories()
+    await getCategories();
     closeDialog();
   }
 

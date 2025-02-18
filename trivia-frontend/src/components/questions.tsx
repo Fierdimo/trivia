@@ -11,9 +11,10 @@ import Question from "./question";
 import { useState } from "react";
 import useQuestions from "@/hooks/useQuestions";
 import NewQuestion from "./newQuestion";
+import { QuestionType } from "@/types/question";
 
 export default function Questions({ admin }: { admin: boolean }) {
-  const [question, setQuestion] = useState();
+  const [question, setQuestion] = useState<QuestionType | undefined>();
   const { categories, getCategories } = useCategories();
   const [open, setOpen] = useState(false);
   const { getRandomQuestion, setScore } = useQuestions();
@@ -65,7 +66,7 @@ export default function Questions({ admin }: { admin: boolean }) {
             fullWidth
             sx={{ marginTop: "1rem" }}
             onClick={() => updateQuestion(category)}
-            disabled={question}
+            disabled={question ? true : false}
           >
             {category}
           </Button>

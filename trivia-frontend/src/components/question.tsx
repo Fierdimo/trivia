@@ -1,8 +1,15 @@
 import { Box, Button, CircularProgress, Grow, Typography } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { QuestionType } from "@/types/question";
 
-export default function Question({ question, setQuestion, setScore }) {
+type QuestionProps = {
+  setScore: () => Promise<null | undefined>
+  setQuestion: Dispatch<SetStateAction<QuestionType|undefined>>,
+  question: QuestionType|undefined
+}
+
+export default function Question({ question, setQuestion, setScore }:QuestionProps) {
   const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
@@ -11,7 +18,7 @@ export default function Question({ question, setQuestion, setScore }) {
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      setQuestion(null);
+      setQuestion(undefined);
     }
     const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearInterval(timer);
@@ -81,7 +88,7 @@ export default function Question({ question, setQuestion, setScore }) {
                   setScore();
                   alert("Correcto!");
                 } else alert("Respuesta incorrecta");
-                setQuestion();
+                setQuestion(undefined);
               }}
             >
               {option}

@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "@/types/user";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 
 export default function useAuth() {
@@ -19,8 +19,11 @@ export default function useAuth() {
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("id", data.id);
       router.push("/game");
-    } catch (error) {
-      alert("Error: " + error.response?.data?.message);
+    } catch (error: unknown) {
+      const myError = error as AxiosError;
+      const data = myError.response?.data as { message: string };
+      const message = data?.message;
+      alert("Error: " + message);
     }
   }
 
@@ -38,15 +41,16 @@ export default function useAuth() {
         },
       });
       login(data);
-      return true
+      return true;
     } catch (error) {
+      const myError = error as AxiosError
       alert(
-        error?.status == 401
+        myError?.status == 401
           ? "Tu sesion ha vencido, reloguea inmediatamente"
           : "Error al validar el usuario"
       );
       router.push("/");
-      return false
+      return false;
     }
   }
 

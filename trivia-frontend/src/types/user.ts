@@ -11,6 +11,7 @@ type UserContextType = {
   login: (userData: User) => void;
   logout: () => void;
 };
+
 type UserProviderProps = {
   children: ReactNode;
 };
