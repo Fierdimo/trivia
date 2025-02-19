@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import useConnection from "./useConnection";
 
 export type RankingProps = {
   email: string;
@@ -8,24 +8,16 @@ export type RankingProps = {
 };
 export default function useRankings() {
   const [ranking, setRanking] = useState<RankingProps[]>([]);
+  const { ADDRESS, getData } = useConnection();
 
-  const backendHost = process.env.BK_HOST || "http://localhost:3000";
+  const backendHost = process.env.BK_HOST || ADDRESS.default_backend;
   const socket = io(backendHost);
 
   async function getGlobalRankings() {
-    try {
-      const token = localStorage.getItem("token");
-      const { data } = await axios.get(backendHost + "/scores/globalRanking", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRanking(data);
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await getData(ADDRESS.globalRanking);
+    setRanking(data);
   }
+
   useEffect(() => {
     socket.connect();
     socket.on("rankingUpdated", (data) => {

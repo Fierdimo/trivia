@@ -1,35 +1,16 @@
-import axios, { AxiosError } from "axios";
+import useConnection from "./useConnection";
 
 export default function useQuestions() {
-  const backendHost = process.env.BK_HOST || "http://localhost:3000";
-  const token = localStorage.getItem("token");
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
+
+
+  const { ADDRESS, getData, postData } = useConnection();
 
   async function getRandomQuestion(category: string) {
-    try {
-      const { data } = await axios.get(
-        backendHost + "/questions/random?category=" + category,
-        {
-          headers,
-        }
-      );
-      return data;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+    return await getData(ADDRESS.randomQuestion + category);
   }
 
   async function setScore() {
-    try {
-      await axios.post(backendHost + "/scores", { points: 100 }, { headers });
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+    await postData(ADDRESS.scores, { points: 100 });
   }
 
   async function setNewQuestion(
@@ -38,21 +19,13 @@ export default function useQuestions() {
     options: string[],
     correctAnswer: number
   ) {
-    try {
-      await axios.post(
-        backendHost + "/questions",
-        { text, category: category.toLowerCase(), options, correctAnswer },
-        { headers }
-      );
-      alert("pregunta guardada con éxito");
-    } catch (error) {
-      console.log(error);
-      const myError = error as AxiosError;
-      const data = myError.response?.data as { message: string };
-      const message = data?.message;
-      alert("Error: " + message);
-      return null;
-    }
+    const { data: isSave } = await postData(ADDRESS.questions, {
+      text,
+      category: category.toLowerCase(),
+      options,
+      correctAnswer,
+    });
+    if (isSave) alert("pregunta guardada con éxito");
   }
   return { getRandomQuestion, setScore, setNewQuestion };
 }

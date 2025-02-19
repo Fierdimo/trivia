@@ -1,29 +1,25 @@
 "use client";
 
 import { User } from "@/types/user";
-import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import useConnection from "./useConnection";
 
 export default function useAuth() {
   const router = useRouter();
-  const backendHost = process.env.BK_HOST || "http://localhost:3000";
+
+  const { ADDRESS, getData, postData } = useConnection();
 
   async function handleSubmit(
     isLogin: boolean,
     email: string,
     password: string
   ) {
-    const url = isLogin ? "/auth/login" : "/auth/register";
-    try {
-      const { data } = await axios.post(backendHost + url, { email, password });
+    const url = isLogin ? ADDRESS.login : ADDRESS.register;
+    const { data } = await postData(url, { email, password });
+    if (data) {
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("id", data.id);
       router.push("/game");
-    } catch (error: unknown) {
-      const myError = error as AxiosError;
-      const data = myError.response?.data as { message: string };
-      const message = data?.message;
-      alert("Error: " + message);
     }
   }
 
@@ -32,24 +28,15 @@ export default function useAuth() {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
       if (!token || !id) {
-        throw new Error("Usuario no validado");
+        throw new Error("Area restringida: Solo para usuarios registrados");
       }
-      const { data } = await axios.get(`${backendHost}/users/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      login(data);
+
+      const user  = await getData(ADDRESS.users + id);
+      login(user);
       return true;
     } catch (error) {
-      const myError = error as AxiosError
-      alert(
-        myError?.status == 401
-          ? "Tu sesion ha vencido, reloguea inmediatamente"
-          : "Error al validar el usuario"
-      );
       router.push("/");
+      alert(error);
       return false;
     }
   }
