@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../users/entities/user.entity';
@@ -17,7 +17,7 @@ export class AuthService {
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
-    throw new UnauthorizedException('Credenciales inválidas');
+    throw new ForbiddenException('Credenciales inválidas');
   }
 
   /** Genera un JWT para el usuario autenticado */

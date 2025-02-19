@@ -21,7 +21,7 @@ export class AuthController {
     example:
       '{  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGE2MDMwNS0zNmJkLTQ3NDEtYTcyNi04MjAzOGE0MjVkM2UiLCJlbWFpbCI6ImJvYkFkbWluQG1haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM5NTAzMDI3LCJleHAiOjE3Mzk1MDY2Mjd9.DGkri6eHhOhqgKpmoO0cHYYzM8dX1lSGaw5DCgBYXU8"}',
   })
-  @ApiResponse({ status: 401, description: 'Credenciales inválidas' })
+  @ApiResponse({ status: 403, description: 'Credenciales inválidas' })
   async login(@Body() loginUserDto: LoginUserDto) {
     const user = await this.authService.validateUser(
       loginUserDto.email,

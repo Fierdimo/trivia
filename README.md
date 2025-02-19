@@ -318,9 +318,9 @@ socket.on('rankingUpdated', (newRanking: RankingEntry[]) => {
 
 ## **Frontend**
 
-| Tecnología     |           Propósito            |     Beneficio Clave     |
-| -------------- | :----------------------------: | :---------------------: |
-| Next.js 13     |      Renderizado híbrido       |  SEO optimizado + ISR   |
-| React Query    |     Gestión de estado API      |   Caching automático    |
-| Material-UI v6 |         Componentes UI         |    Diseño responsive    |
-| SWR            | Actualizaciones en tiempo real | Revalidación automática |
+| Tecnología     |           Propósito            |     Beneficio Clave      |
+| -------------- | :----------------------------: | :----------------------: |
+| Next.js 15     |      Renderizado híbrido       |   SEO optimizado + ISR   |
+| Axios          |     Gestión de estado API      | API simple y consistente |
+| Material-UI v6 |         Componentes UI         |    Diseño responsive     |
+| SWR            | Actualizaciones en tiempo real | Revalidación automática  |
