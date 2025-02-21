@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { QuestionType } from "@/types/question";
 
 type QuestionProps = {
-  setScore: () => Promise<null | undefined>
+  setScore: () => Promise<void>
   setQuestion: Dispatch<SetStateAction<QuestionType|undefined>>,
   question: QuestionType|undefined
 }
