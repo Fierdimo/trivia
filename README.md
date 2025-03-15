@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/badge/Frontend-NextJS-black?style=for-the-badge&logo=next.js" alt="NextJS">
   <img src="https://img.shields.io/badge/WebSockets-Socket.IO-yellow?style=for-the-badge&logo=socket.io" alt="WebSockets">
   <img src="https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white" alt="MaterialUI">
+  <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens" alt="JWT">
 </div>
 
 ## 📚 Tabla de Contenidos
@@ -22,19 +23,21 @@
 
 ```bash
 # 1. Clonar repositorio
-git clone https://github.com/tu-usuario/trivia-backend.git
+git clone https://github.com/fierdimo/trivia.git
+
+# 2. Cambiar al directorio del backend
 cd trivia-backend
 
-# 2. Instalar dependencias
+# 3. Instalar dependencias
 npm install
 
-# 3. Configurar PostgreSQL con Docker
+# 4. Iniciar un contenedor para PostgreSQL
 docker-compose up -d
 
-# 4. Iniciar servidor (modo desarrollo)
+# 5. Iniciar servidor (modo desarrollo)
 npm run dev
 
-# 5. Acceder a la documentación API
+# 6. Acceder a la documentación API
 http://localhost:3000/api
 
 
@@ -43,9 +46,8 @@ http://localhost:3000/api
 ### **Frontend (NextJS)**
 
 ```bash
-# 1. Clonar repositorio
-git clone https://github.com/tu-usuario/trivias.git
-cd trivias
+# 1. Desde la raiz del directorio clonado...
+cd trivia-frontend
 
 # 2. Instalar dependencias
 npm install
@@ -55,12 +57,11 @@ npm run dev
 
 # 4. Acceder al sitio web
 http://localhost:3001
-**nota: el backend debe encenderse primero para obtener el puerto 3001**
 ```
 
 ## ⛏️ Configuración
 
-se requiere de ciertas variables de entorno para el correcto funcionamiento de cada una de las partes. esto incluye la base de datos en posgreSQL en el backend.
+Se requiere de ciertas variables de entorno para el correcto funcionamiento de cada una de las partes. esto incluye la base de datos en posgreSQL en el backend. En entorno de desarrollo se requiere de un archivo .env con lo siguiente:
 
 ### **Variables de entorno backend**
 
@@ -81,20 +82,25 @@ BK_HOSTS=http://localhost:3000
 
 ## **🐳 Contenedores en Docker**
 
-de manera alternativa de puede instalar el proyecto completo con docker compose
+De manera alternativa de puede instalar el proyecto completo con docker compose.
+
+_Desde la base del proyecto ejecutar `docker compose up -d`._
 
 ### **Estructura del proyecto**
 
 ```bash
 trivia/
 ├── backend/
-│   ├── Dockerfile
 │   ├── src/
+│   ├── .env # solo en desarrollo
+│   ├── Dockerfile
 │   └── package.json
 ├── frontend/
-│   ├── Dockerfile
 │   ├── src/
+│   ├── .env # solo en desarrollo
+│   ├── Dockerfile
 │   └── package.json
+├── README.MD
 └── docker-compose.yml
 ```
 
@@ -315,12 +321,18 @@ socket.on('rankingUpdated', (newRanking: RankingEntry[]) => {
 | TypeORM         | ORM para PostgreSQL         | Migraciones y relaciones avanzadas |
 | Socket.IO       | Comunicación en tiempo real | Bajo latency (~100ms)              |
 | Class-Validator | Validación de datos         | Schemas tipo TypeScript            |
+| JWT             | Autenticación de usuarios   | Espiración de la sesión            |
 
-## **Frontend**
+# **Frontend**
 
-| Tecnología     |           Propósito            |     Beneficio Clave      |
-| -------------- | :----------------------------: | :----------------------: |
-| Next.js 13     |      Renderizado híbrido       |   SEO optimizado + ISR   |
-| Axios          |     Gestión de estado API      | API simple y consistente |
-| Material-UI v6 |         Componentes UI         |    Diseño responsive     |
-| SWR            | Actualizaciones en tiempo real | Revalidación automática  |
+| Tecnología     |       Propósito       |     Beneficio Clave      |
+| -------------- | :-------------------: | :----------------------: |
+| Next.js 15     |  Renderizado híbrido  |   SEO optimizado + ISR   |
+| Axios          | Gestión de estado API | API simple y consistente |
+| Material-UI v6 |    Componentes UI     |    Diseño responsive     |
+
+## Licencia
+
+Este proyecto cuenta con licencia conforme alos terminos de la licencia MIT
+
+![License](https://img.shields.io/badge/license-MIT-green)
