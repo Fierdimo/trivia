@@ -1,11 +1,17 @@
 # 🎮 Trivia Game - Preguntas y Respuestas con Ranking en Tiempo Real
 
-<div align="center">
-  <img src="https://img.shields.io/badge/Backend-NestJS-red?style=for-the-badge&logo=nestjs" alt="NestJS">
-  <img src="https://img.shields.io/badge/Frontend-NextJS-black?style=for-the-badge&logo=next.js" alt="NextJS">
-  <img src="https://img.shields.io/badge/WebSockets-Socket.IO-yellow?style=for-the-badge&logo=socket.io" alt="WebSockets">
-  <img src="https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white" alt="MaterialUI">
-  <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens" alt="JWT">
+<div>
+
+![NextJS](https://img.shields.io/badge/Frontend-NextJS-white?style=for-the-badge&logo=next.js)
+![MaterialUI](https://img.shields.io/badge/Style-Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)
+
+![NestJS](https://img.shields.io/badge/Backend-NestJS-red?style=for-the-badge&logo=nestjs)
+![JWT](https://img.shields.io/badge/Security-JWT-pink?style=for-the-badge&logo=JSON%20web%20tokens)
+![Postgres](https://img.shields.io/badge/database-postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+
+![WebSockets](https://img.shields.io/badge/WebSockets-Socket.IO-yellow?style=for-the-badge&logo=socket.io)
+![Context-API](https://img.shields.io/badge/API--REST-Axios-000000?style=for-the-badge&logo=axios)
+
 </div>
 
 ## 📚 Tabla de Contenidos
@@ -14,8 +20,9 @@
 - [Configuración](#-configuración)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
 - [WebSockets](#-websockets)
-- [Endpoints API](#-endpoints-api)
 - [Arquitectura Técnica](#-arquitectura-técnica)
+- [Por hacer](#-por-hacer)
+- [Licencia](#-licencia)
 
 ## 📥 Instalación
 
@@ -61,7 +68,7 @@ http://localhost:3001
 
 ## ⛏️ Configuración
 
-Se requiere de ciertas variables de entorno para el correcto funcionamiento de cada una de las partes. esto incluye la base de datos en posgreSQL en el backend. En entorno de desarrollo se requiere de un archivo .env con lo siguiente:
+Se requiere de ciertas variables de entorno para el correcto funcionamiento de cada una de las partes. Esto incluye la base de datos en posgreSQL en el backend y las credfenciales del `admin` por defecto. En entorno de desarrollo se requiere de un archivo `.env` con lo siguiente:
 
 ### **Variables de entorno backend**
 
@@ -72,6 +79,8 @@ DB_USER=postgres
 DB_PASSWORD=tu_password_seguro
 DB_NAME=trivia_db
 JWT_SECRET=mi_clave_secreta_super_segura
+ADMIN_EMAIL=admin # email para el administrador por defecto
+ADMIN_PASSWORD=admin # contraseña del administrador por defecto
 ```
 
 ### **Variables de entorno fronted**
@@ -118,6 +127,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: tu_password_seguro
       POSTGRES_DB: trivia_db
+      ADMIN_EMAIL: admin
+      ADMIN_PASSWORD: admin
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -331,8 +342,12 @@ socket.on('rankingUpdated', (newRanking: RankingEntry[]) => {
 | Axios          | Gestión de estado API | API simple y consistente |
 | Material-UI v6 |    Componentes UI     |    Diseño responsive     |
 
+## Por hacer
+
+El diseño del frontend aun se encuentra crudo y solo muestra de manera escencial su funcionalidad. Es necesario crear componentes amigables con el usuario y compatibilidad con dispositivos con pantallas de diferentes tamaños (responsive design)
+
 ## Licencia
 
-Este proyecto cuenta con licencia conforme alos terminos de la licencia MIT
+Este proyecto cuenta con licencia conforme a los terminos de la licencia MIT
 
 ![License](https://img.shields.io/badge/license-MIT-green)
