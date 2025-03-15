@@ -340,11 +340,11 @@ socket.on('rankingUpdated', (newRanking: RankingEntry[]) => {
 | Axios          | API state management | Simple and consistent API |
 | Material-UI v6 |    UI components     |     Responsive design     |
 
-## To-Do
+# To Do
 
 The frontend design is still raw and only shows essential functionality. It is necessary to create user-friendly components and ensure compatibility with devices of different screen sizes (responsive design).
 
-## License
+# License
 
 This project is licensed under the terms of the MIT License
 

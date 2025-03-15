@@ -342,11 +342,11 @@ socket.on('rankingUpdated', (newRanking: RankingEntry[]) => {
 | Axios          | Gestión de estado API | API simple y consistente |
 | Material-UI v6 |    Componentes UI     |    Diseño responsive     |
 
-## Por hacer
+# Por hacer
 
 El diseño del frontend aun se encuentra crudo y solo muestra de manera escencial su funcionalidad. Es necesario crear componentes amigables con el usuario y compatibilidad con dispositivos con pantallas de diferentes tamaños (responsive design)
 
-## Licencia
+# Licencia
 
 Este proyecto cuenta con licencia conforme a los terminos de la licencia MIT
 
